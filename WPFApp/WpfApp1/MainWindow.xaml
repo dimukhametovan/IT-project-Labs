@@ -1,0 +1,29 @@
+﻿<Window x:Class="WpfApp1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="PolygonDrawing" Height="450" Width="800">
+    <Grid>
+        <Border BorderBrush="Black" BorderThickness="2" Margin="400,10,10,150">
+            <Canvas Name="drawCanvas">
+                <!-- Здесь будет рисоваться полигон -->
+            </Canvas>
+        </Border>
+        <StackPanel Orientation="Vertical" Margin="10,10, 500, 150">
+            <TextBlock Text="Введите x и y для точки 1:"/>
+            <TextBox Name="point1XTB" Margin="0 5 0 5" Text="20"/>
+            <TextBox Name="point1YTB" Margin="0 5 0 5" Text="30"/>
+            <TextBlock Text="Введите x и y для точки 2:"/>
+            <TextBox Name="point2XTB" Margin="0 5 0 5" Text="100"/>
+            <TextBox Name="point2YTB" Margin="0 5 0 5" Text="150"/>
+            <TextBlock Text="Введите x и y для точки 3:"/>
+            <TextBox Name="point3XTB" Margin="0 5 0 5" Text="300"/>
+            <TextBox Name="point3YTB" Margin="0 5 0 5" Text="200"/>
+            <Button Content="Нарисовать" Click="DrawTriangle"/>
+        </StackPanel>
+    </Grid>
+</Window>
+    
