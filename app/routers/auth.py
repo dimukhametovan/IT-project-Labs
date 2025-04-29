@@ -5,6 +5,8 @@ from app.auth.security import verify_password, create_access_token
 from app.auth.dependencies import get_db
 from app.models.user import User
 from datetime import timedelta
+from fastapi import Body
+from app.auth.security import get_password_hash
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
@@ -26,3 +28,30 @@ def login(
         expires_delta=access_token_expires
     )
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.post("/register")
+def register(
+    email: str = Body(...),
+    password: str = Body(...),
+    full_name: str = Body(...),
+    db: Session = Depends(get_db)
+):
+    # Проверка: пользователь с таким email уже есть
+    existing_user = db.query(User).filter(User.email == email).first()
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User with this email already exists"
+        )
+
+    # Создание пользователя
+    new_user = User(
+        email=email,
+        hashed_password=get_password_hash(password),
+        full_name=full_name
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    return {"message": "User successfully registered"}

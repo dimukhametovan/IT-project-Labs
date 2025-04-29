@@ -4,7 +4,7 @@ from app.routers import auth, student  # создашь позже
 
 app = FastAPI()
 
-# создаем таблицы
+# создаем таблиц
 Base.metadata.create_all(bind=engine)
 
 # подключим маршруты позже
