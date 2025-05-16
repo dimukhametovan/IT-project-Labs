@@ -1,55 +1,69 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../Register/Register.css";
 import logo from "../../assets/Images/logo.svg";
+import api from "../api/axios";
+
+const handleRegister = async () => {
+  try {
+    await api.post("/auth/register", {
+      email,
+      password,
+      full_name,
+    });
+    // перенаправить на login
+  } catch (err) {
+    console.error(err.response.data);
+  }
+};
 
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    full_name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    full_name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
 
     if (formData.password !== formData.confirmPassword) {
-      setError('Пароли не совпадают');
+      setError("Пароли не совпадают");
       return;
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/docs/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("http://127.0.0.1:8000/docs/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           full_name: formData.full_name,
           email: formData.email,
-          password: formData.password
-        })
+          password: formData.password,
+        }),
       });
 
       if (!response.ok) {
         const data = await response.json();
-        setError(data.message || 'Ошибка регистрации');
+        setError(data.message || "Ошибка регистрации");
         return;
       }
 
-      navigate('/');
+      navigate("/");
     } catch (err) {
-      setError('Ошибка подключения к серверу');
+      setError("Ошибка подключения к серверу");
     }
   };
 
@@ -98,10 +112,12 @@ const Register = () => {
             onChange={handleChange}
             required
           />
-          <button type="submit" className="button">Зарегистрироваться</button>
+          <button type="submit" className="button">
+            Зарегистрироваться
+          </button>
         </form>
 
-        {error && <div style={{ color: 'red', marginTop: 10 }}>{error}</div>}
+        {error && <div style={{ color: "red", marginTop: 10 }}>{error}</div>}
 
         <div className="login_link">
           Уже зарегистрированы? <a href="/">Войти</a>
