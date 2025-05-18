@@ -2,20 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../Register/Register.css";
 import logo from "../../assets/Images/logo.svg";
-import api from "../api/axios";
-
-const handleRegister = async () => {
-  try {
-    await api.post("/auth/register", {
-      email,
-      password,
-      full_name,
-    });
-    // перенаправить на login
-  } catch (err) {
-    console.error(err.response.data);
-  }
-};
+import api from "../../api/axios.js";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -45,19 +32,29 @@ const Register = () => {
     }
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/docs/auth/register", {
+      const response = await fetch("http://127.0.0.1:8000/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           full_name: formData.full_name,
           email: formData.email,
           password: formData.password,
+          confirm_password: formData.confirmPassword,
         }),
       });
 
       if (!response.ok) {
         const data = await response.json();
-        setError(data.message || "Ошибка регистрации");
+        console.error("Server response:", data);
+
+        if (Array.isArray(data.detail)) {
+          // если detail — массив ошибок
+          const messages = data.detail.map((err) => err.msg).join(", ");
+          setError(messages);
+        } else {
+          setError(data.detail || data.message || "Ошибка регистрации");
+        }
+
         return;
       }
 

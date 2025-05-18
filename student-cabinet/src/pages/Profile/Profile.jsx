@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "../Profile/Profile.css";
 import logo from "../../assets/Images/logo.svg";
 
@@ -16,14 +16,15 @@ const Profile = () => {
     //   return;
     // }
 
-    fetch("http://127.0.0.1:8000/docs/student/profile", {
+    fetch("http://127.0.0.1:8000/student/profile", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then(async (res) => {
-        if (!res.ok) throw new Error("Оишбка при попытке получить основную информацию");
+        if (!res.ok)
+          throw new Error("Оишбка при попытке получить основную информацию");
         const data = await res.json();
         setProfileData(data);
       })
@@ -35,18 +36,19 @@ const Profile = () => {
           group: "М8О-202Б-23",
           education_form: "Очная",
           status: "Продолжает обучение",
-          email: "ivanov@example.com"
+          email: "ivanov@example.com",
         });
       });
 
     fetch("http://127.0.0.1:8000/docs/student/grades", {
       method: "GET",
       headers: {
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
       .then(async (res) => {
-        if (!res.ok) throw new Error("Ошибка при попытке получить информацию об оценках");
+        if (!res.ok)
+          throw new Error("Ошибка при попытке получить информацию об оценках");
         const gradeData = await res.json();
         setGrades(gradeData);
       })
@@ -54,23 +56,25 @@ const Profile = () => {
         setGrades([
           { semester: 1, subject: "Математика", grade: 5 },
           { semester: 1, subject: "Физика", grade: 4 },
-          { semester: 2, subject: "Информатика", grade: 5 }
+          { semester: 2, subject: "Информатика", grade: 5 },
         ]);
       });
-
   }, [navigate]);
 
-  if (!profileData) return <div className='loading'>Загрузка...</div>;
+  if (!profileData) return <div className="loading">Загрузка...</div>;
 
   return (
     <div className="profile_container">
-      <button className="logout_button" onClick={() => {
-        localStorage.removeItem("token");
-        navigate("/");
-      }}>
+      <button
+        className="logout_button"
+        onClick={() => {
+          localStorage.removeItem("token");
+          navigate("/");
+        }}
+      >
         Выйти
       </button>
-{/* основная инфа */}
+      {/* основная инфа */}
       <div className="profile_wrapper">
         <div className="profile_header">
           <div className="profile_logo">
@@ -106,7 +110,7 @@ const Profile = () => {
         </div>
 
         <div className="separator"></div>
-{/* Таблица */}
+        {/* Таблица */}
         {grades.length > 0 && (
           <div className="grades_section">
             <h2 className="grades_title">Табель успеваемости</h2>
@@ -130,7 +134,6 @@ const Profile = () => {
             </table>
           </div>
         )}
-
       </div>
     </div>
   );

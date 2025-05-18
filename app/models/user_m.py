@@ -9,5 +9,5 @@ class User(Base):
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
     role = Column(String, default="student")
-    full_name = Column(String, nullable=False)
+    full_name = Column(String)
     student = relationship("Student", back_populates="user", uselist=False)
