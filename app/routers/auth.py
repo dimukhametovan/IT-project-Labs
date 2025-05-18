@@ -10,6 +10,14 @@ from fastapi import Body
 # from app.auth.security import get_password_hash
 from app.schemas.user import UserRegister
 
+from datetime import timedelta
+from fastapi import status
+from app.auth.security import (
+    create_access_token,
+    verify_password,
+    ACCESS_TOKEN_EXPIRE_MINUTES
+)
+
 router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/register")
 def register(user: UserRegister, db: Session = Depends(get_db)):
@@ -80,20 +88,25 @@ def login(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: Session = Depends(get_db)
 ):
-    # Находим пользователя по email
     user = db.query(User).filter(User.email == form_data.username).first()
 
-    # Проверяем, что пользователь существует и пароль совпадает (без хеширования)
     if not user or form_data.password != user.hashed_password:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
         )
+    
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.email},  # sub - стандартное поле для идентификатора
+        expires_delta=access_token_expires
+    )
 
-    # Возвращаем просто подтверждение входа без токена
     return {
         "message": "Login successful",
         "user_id": user.id,
         "email": user.email,
-        "full_name": user.full_name
+        "full_name": user.full_name,
+        "access_token": access_token,
+        "token_type": "bearer"
     }

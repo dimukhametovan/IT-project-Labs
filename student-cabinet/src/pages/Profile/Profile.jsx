@@ -15,6 +15,8 @@ const Profile = () => {
     //   navigate("/");
     //   return;
     // }
+    // const token = localStorage.getItem("token");
+    console.log("incoming token:", token);
 
     fetch("http://127.0.0.1:8000/student/profile", {
       method: "GET",
@@ -40,7 +42,7 @@ const Profile = () => {
         });
       });
 
-    fetch("http://127.0.0.1:8000/docs/student/grades", {
+    fetch("http://127.0.0.1:8000/student/grades", {
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -83,7 +85,7 @@ const Profile = () => {
           <h1 className="profile_title">Личный кабинет студента</h1>
         </div>
 
-        <div className="student_name">{profileData.full_name}</div>
+        <div className="student_name">{profileData?.full_name}</div>
 
         <div className="profile_info">
           <div className="profile_row">

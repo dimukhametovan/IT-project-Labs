@@ -19,24 +19,32 @@ const Login = () => {
     e.preventDefault();
     setError("");
 
+    const form = new URLSearchParams();
+    form.append("username", formData.email);
+    form.append("password", formData.password);
+
     try {
       const response = await fetch("http://127.0.0.1:8000/auth/login", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: JSON.stringify(formData),
+        body: form.toString(),
       });
 
+      const data = await response.json();
+      console.log("Ответ сервера:", data);
+
       if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.message || "Ошибка входа");
+        throw new Error(data.detail?.[0]?.msg || "Ошибка входа");
       }
 
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
+      localStorage.setItem("token", data.access_token); // если FastAPI возвращает access_token
+      // console.log("Ответ сервера:", data);
+      console.log("token saved:", data.access_token);
       navigate("/profile");
     } catch (err) {
+      console.error("Ошибка входа:", err);
       setError(err.message);
     }
   };

@@ -11,6 +11,7 @@ class Student(Base):
     group = Column(String)
     education_form = Column(String)  # очная/заочная
     status = Column(String)          # учится, отчислен и т.д.
+    email = Column(String, nullable=True)
 
     user = relationship("User", back_populates="student")
     grades = relationship("Grade", back_populates="student")
