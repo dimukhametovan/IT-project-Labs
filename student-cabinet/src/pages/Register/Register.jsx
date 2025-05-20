@@ -48,7 +48,6 @@ const Register = () => {
         console.error("Server response:", data);
 
         if (Array.isArray(data.detail)) {
-          // если detail — массив ошибок
           const messages = data.detail.map((err) => err.msg).join(", ");
           setError(messages);
         } else {

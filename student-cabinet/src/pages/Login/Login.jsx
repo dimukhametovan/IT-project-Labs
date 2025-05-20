@@ -39,8 +39,7 @@ const Login = () => {
         throw new Error(data.detail?.[0]?.msg || "Ошибка входа");
       }
 
-      localStorage.setItem("token", data.access_token); // если FastAPI возвращает access_token
-      // console.log("Ответ сервера:", data);
+      localStorage.setItem("token", data.access_token);
       console.log("token saved:", data.access_token);
       navigate("/profile");
     } catch (err) {

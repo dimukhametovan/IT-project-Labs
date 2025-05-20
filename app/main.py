@@ -7,11 +7,11 @@ from app.models import grade_m, student_m, user_m
 
 app = FastAPI()
 
-try:
-    Base.metadata.create_all(bind=engine)
-    print("✅ Таблицы созданы успешно")
-except Exception as e:
-    print("❌ Ошибка при создании таблиц:", e)
+# try:
+#     Base.metadata.create_all(bind=engine)
+#     print("Таблицы созданы успешно")
+# except Exception as e:
+#     print("Ошибка при создании таблиц:", e)
 
 
 app.add_middleware(

@@ -11,11 +11,6 @@ const Profile = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    // if (!token) {
-    //   navigate("/");
-    //   return;
-    // }
-    // const token = localStorage.getItem("token");
     console.log("incoming token:", token);
 
     fetch("http://127.0.0.1:8000/student/profile", {
@@ -31,8 +26,6 @@ const Profile = () => {
         setProfileData(data);
       })
       .catch(() => {
-        // localStorage.removeItem("token");
-        // navigate("/");
         setProfileData({
           full_name: "Иванов Иван Иванович",
           group: "М8О-202Б-23",

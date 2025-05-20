@@ -98,7 +98,7 @@ def login(
     
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.email},  # sub - стандартное поле для идентификатора
+        data={"sub": user.email}, 
         expires_delta=access_token_expires
     )
 
